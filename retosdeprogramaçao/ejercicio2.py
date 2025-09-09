@@ -14,3 +14,12 @@ def CrearDiccionarioComFrase(cadena:str):
         if not letras in palavras:   # verificamos que la letra no este repetida
             palavras[letras]=cadena.count(letras)  #Agregamos la letra con la cantidad de vezes que existe en la palabra
     return palavras 
+def CompararDiccionarios(dic1:dict,dic2:dict):
+    for item in dic1:
+        aux = False
+        for item2 in dic2:
+            if dic1[item] == dic2[item2]:
+                aux=True
+        if aux == False:
+            return aux
+    return aux
