@@ -10,7 +10,7 @@ def MesmaCantidadLetras(cadena1:str,cadena2:str):
     return False
 def CrearDiccionarioComFrase(cadena:str):
     palavras={} #Creamos Diccionario Vacio
-    for letras in cadena:
-        #if
-        palavras[letras]=cadena.count(letras)
-    return
+    for letras in cadena:  #Recorremos la cadena 
+        if not letras in palavras:   # verificamos que la letra no este repetida
+            palavras[letras]=cadena.count(letras)  #Agregamos la letra con la cantidad de vezes que existe en la palabra
+    return palavras 
