@@ -23,3 +23,15 @@ def CompararDiccionarios(dic1:dict,dic2:dict):
         if aux == False:
             return aux
     return aux
+print('Este aplicativo verifica se duas palavras sao anagramas')
+palavra1=input('Digite a primeira palavra: ')
+palavra2=input('Digite a segunda palavra: ')
+if(MesmaCantidadLetras(palavra1,palavra2) == False or palavra1 == palavra2):
+    print('As palavras introducidas não são anagramas')
+elif MesmaCantidadLetras(palavra1,palavra2) == True:
+    primera = CrearDiccionarioComFrase(palavra1)
+    segunda = CrearDiccionarioComFrase(palavra2)
+    if(CompararDiccionarios(primera,segunda) == True):
+        print(f'As palavras {palavra1} e {palavra2} sao anagramas')
+    else:
+        print(f'As palavras {palavra1} e {palavra2} nao sao anagramas')
