@@ -23,4 +23,7 @@ class Conexcao:
         print(f'Produto agregado corretamente')
 prova=Conexcao('prova.db')
 prova.crear_tabela()
-prova.AgregarProduto('Bolacha', 5.9, 3)
+produto=input('Produto que compramos: ')
+preco=float(input('Qual o preço do produto: '))
+quantidade=int(input('Qual a quantidade do material: '))
+prova.AgregarProduto(produto,preco,quantidade)
