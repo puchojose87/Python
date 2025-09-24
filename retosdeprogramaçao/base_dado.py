@@ -12,5 +12,15 @@ class Conexcao:
         self.cursor.execute(tabela)
         self.connect.commit()
         self.connect.close()
-prova=Conexcao('prova')
+    def AgregarProduto(self,nome:str,preco:float,quantidade:int):
+        self.connect=sqlite3.connect('prova.db')
+        self.cursor=self.connect.cursor()
+        dados=(nome,preco,quantidade)
+        produto="""INSERT INTO PRODUTOS(nome,preço,cantidad) VALUES (?,?,?)"""
+        self.cursor.execute(produto,dados)
+        self.connect.commit()
+        self.connect.close()
+        print(f'Produto agregado corretamente')
+prova=Conexcao('prova.db')
 prova.crear_tabela()
+prova.AgregarProduto('Bolacha', 5.9, 3)
