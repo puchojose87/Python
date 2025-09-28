@@ -5,7 +5,7 @@ class Conexcao:
         self.cursor=self.connect.cursor()
     def crear_tabela(self):
         tabela="""CREATE TABLE IF NOT EXISTS PRODUTOS_COMPRADOS(
-        id integer primary key,
+        id integer primary key autoincrement,
         nome text,
         preço real,
         cantidad integer)"""
@@ -13,7 +13,8 @@ class Conexcao:
         self.connect.commit()
         tabela="""CREATE TABLE IF NOT EXISTS ESTOQUE_PRODUTOS(
         nome text,
-        cantidad integer)"""
+        cantidad integer,
+        preco_medio real)"""
         self.cursor.execute(tabela)
         self.connect.commit()
         self.connect.close()
@@ -21,8 +22,10 @@ class Conexcao:
         self.connect=sqlite3.connect('prova.db')
         self.cursor=self.connect.cursor()
         dados=(nome,preco,quantidade)
-        produto="""INSERT INTO PRODUTOS(nome,preço,cantidad) VALUES (?,?,?)"""
+        produto="""INSERT INTO PRODUTOS_COMPRADOS(nome,preço,cantidad) VALUES (?,?,?)"""
+        estoque="""INSERT INTO ESTOQUE_PRODUTOS(nome,cantidad) VALUES (?,?)"""
         self.cursor.execute(produto,dados)
+        self.cursor.execute(estoque,(nome,quantidade))
         self.connect.commit()
         self.connect.close()
         print(f'Produto agregado corretamente')
