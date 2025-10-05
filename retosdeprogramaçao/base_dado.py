@@ -51,7 +51,22 @@ class Conexcao:
         self.agregar_produto_estoque(nome,preco,quantidade)
 prova=Conexcao('prova.db')
 prova.crear_tabela()
-produto=input('Produto que compramos: ')
-preco=float(input('Qual o preço do produto: '))
-quantidade=int(input('Qual a quantidade do material: '))
-prova.AgregarProduto(produto,preco,quantidade)
+opcao=0
+while opcao!='4':
+    print('Seleciona uma opção: ')
+    print('1. Comprar Materia Prima')
+    print('2. Fabricar Produto')
+    print('3. Vender Produto')
+    opcao=input('4. Sair')
+    match opcao:
+        case '1':
+            produto=input('Produto que compramos: ')
+            preco=float(input('Qual o preço do produto: '))
+            quantidade=int(input('Qual a quantidade do material: '))
+            prova.AgregarProduto(produto,preco,quantidade)
+        case '2':
+            pass
+        case '3':
+            pass
+        case _:
+            break
