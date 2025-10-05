@@ -18,17 +18,37 @@ class Conexcao:
         self.cursor.execute(tabela)
         self.connect.commit()
         self.connect.close()
+    def agregar_produto_estoque(self,nome:str,preco:float,quantidade:int):
+        self.connect=sqlite3.connect('prova.db')
+        self.cursor=self.connect.cursor()
+        self.cursor.execute("SELECT cantidad FROM ESTOQUE_PRODUTOS WHERE nome = ?",(nome,))
+        cantidad=self.cursor.fetchone()
+        if cantidad:
+            self.cursor.execute("SELECT preco_medio FROM ESTOQUE_PRODUTOS WHERE nome = ?",(nome,))
+            preco_medio=self.cursor.fetchone()
+            #print(type(preco_medio))
+            preco_medio=preco_medio[0]
+            preco_medio=(preco_medio*cantidad[0]+quantidade*preco)/(cantidad[0]+quantidade)
+            cantidad=cantidad[0]+quantidade
+            self.cursor.execute("UPDATE ESTOQUE_PRODUTOS SET preco_medio = ?, cantidad = ? WHERE nome = ?",(preco_medio,cantidad,nome))
+            self.connect.commit()
+            self.connect.close()
+        else:
+            self.cursor.execute("INSERT INTO ESTOQUE_PRODUTOS(nome,preco_medio,cantidad) VALUES (?,?,?)",(nome,preco,quantidade))
+            self.connect.commit()
+            self.connect.close()
     def AgregarProduto(self,nome:str,preco:float,quantidade:int):
         self.connect=sqlite3.connect('prova.db')
         self.cursor=self.connect.cursor()
         dados=(nome,preco,quantidade)
         produto="""INSERT INTO PRODUTOS_COMPRADOS(nome,preço,cantidad) VALUES (?,?,?)"""
-        estoque="""INSERT INTO ESTOQUE_PRODUTOS(nome,cantidad) VALUES (?,?)"""
+        #estoque="""INSERT INTO ESTOQUE_PRODUTOS(nome,cantidad) VALUES (?,?)"""
         self.cursor.execute(produto,dados)
-        self.cursor.execute(estoque,(nome,quantidade))
+        #self.cursor.execute(estoque,(nome,quantidade))
         self.connect.commit()
         self.connect.close()
         print(f'Produto agregado corretamente')
+        self.agregar_produto_estoque(nome,preco,quantidade)
 prova=Conexcao('prova.db')
 prova.crear_tabela()
 produto=input('Produto que compramos: ')
