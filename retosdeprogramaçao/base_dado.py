@@ -1,4 +1,15 @@
 import sqlite3
+class Materia_Prima:
+    def __init__(self, nome, quantidade:int, preço:float):
+        self.nome=nome
+        self.quantidade=quantidade
+        self.preço_unitario=preço
+    def get_nome(self):
+        return self.nome
+    def get_quantidade(self):
+        return self.quantidade
+    def get_preçomedio(self):
+        return self.preço_unitario
 class Conexcao:
     def __init__(self,bd:str):
         self.connect=sqlite3.connect(bd)
@@ -15,6 +26,12 @@ class Conexcao:
         nome text,
         cantidad integer,
         preco_medio real)"""
+        self.cursor.execute(tabela)
+        self.connect.commit()
+        tabela="""CREATE TABLE IF NOT EXISTS PRODUTOS(
+        nome text,
+        cantidad integer,
+        costo real)"""
         self.cursor.execute(tabela)
         self.connect.commit()
         self.connect.close()
@@ -49,6 +66,19 @@ class Conexcao:
         self.connect.close()
         print(f'Produto agregado corretamente')
         self.agregar_produto_estoque(nome,preco,quantidade)
+    def producir(self,nome:str,cantidad:int,materia_prima:list):
+        self.connect=sqlite3.connect('prova.db')
+        self.cursor=self.connect.cursor()
+        custo=0
+        for materiais in materia_prima:
+            custo+=Materia_Prima(materiais).get_preçomedio()*Materia_Prima(materiais).get_quantidade()
+            self.cursor.execute("SELECT cantidad FROM ESTOQUE_PRODUTOS WHERE nome = ?",(Materia_Prima(materiais).get_nome),)
+            cantidad_estoque=self.cursor.fetchone()[0]
+            cantidad_estoque=cantidad_estoque-Materia_Prima(materiais).get_quantidade()
+            self.cursor.execute("UPDATE ESTOQUE_PRODUTOS SET cantidad = ? WHERE nome = ?",(cantidad_estoque,Materia_Prima(materiais).get_nome()))
+            self.connect.commit()
+        self.cursor.execute("INSERT INTO PRODUTOS(nome, cantidad, costo) VALUES (?,?,?)",(nome,cantidad,custo))
+        self.connect.commit()
 prova=Conexcao('prova.db')
 prova.crear_tabela()
 opcao=0
