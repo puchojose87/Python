@@ -1,15 +1,6 @@
 import sqlite3
-class Materia_Prima:
-    def __init__(self, nome, quantidade:int, preço:float):
-        self.nome=nome
-        self.quantidade=quantidade
-        self.preço_unitario=preço
-    def get_nome(self):
-        return self.nome
-    def get_quantidade(self):
-        return self.quantidade
-    def get_preçomedio(self):
-        return self.preço_unitario
+from modelo.materia_prima import Materia_Prima
+from modelo.produto import Produto
 class Conexcao:
     def __init__(self,bd:str):
         self.connect=sqlite3.connect(bd)
@@ -79,7 +70,7 @@ class Conexcao:
             self.connect.commit()
         self.cursor.execute("INSERT INTO PRODUTOS(nome, cantidad, costo) VALUES (?,?,?)",(nome,cantidad,custo))
         self.connect.commit()
-prova=Conexcao('prova.db')
+"""prova=Conexcao('prova.db')
 prova.crear_tabela()
 opcao=0
 while opcao!='4':
@@ -99,4 +90,4 @@ while opcao!='4':
         case '3':
             pass
         case _:
-            break
+            break"""
