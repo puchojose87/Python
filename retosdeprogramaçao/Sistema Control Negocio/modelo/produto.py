@@ -1,4 +1,4 @@
-from materia_prima import Materia_Prima
+from modelo.materia_prima import Materia_Prima
 class Produto:
     def __init__(self,nome:str,preço:float,quantidade:int,lista_materiais):
         self.materiais_utilizados[Materia_Prima]=lista_materiais
