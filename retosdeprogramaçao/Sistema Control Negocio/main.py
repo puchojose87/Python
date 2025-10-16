@@ -9,8 +9,9 @@ def fazer_compra():
         try:
             preco=float(preco_unitario.get())
         except ValueError:
-            messagebox.showwarning('Erro','O preço tem que ser um número')
+            messagebox.showwarning('Erro','O preço tem que ser um número',parent=compra_material)
             preco_unitario.delete(0,len(preco_unitario.get()))
+            preco_unitario.focus_set()
             return
         cantidade=int(cantidad.get())
         con.agregar_produto_estoque(name,preco,cantidade)
