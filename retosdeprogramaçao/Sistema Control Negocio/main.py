@@ -1,13 +1,22 @@
 from datos import base_dado
 from modelo import materia_prima,produto
 import tkinter as tk
+from tkinter import messagebox
 def fazer_compra():
     def insertar_datos():
         con=base_dado.Conexcao('prova.db')
         name=prod.get()
-        preco=float(preco_unitario.get())
+        try:
+            preco=float(preco_unitario.get())
+        except ValueError:
+            messagebox.showwarning('Erro','O preço tem que ser um número')
+            preco_unitario.delete(0,len(preco_unitario.get()))
+            return
         cantidade=int(cantidad.get())
         con.agregar_produto_estoque(name,preco,cantidade)
+        cantidad.delete(0,len(cantidad.get()))
+        preco_unitario.delete(0,len(preco_unitario.get()))
+        prod.delete(0,len(prod.get()))
     compra_material=tk.Tk()
     compra_material.title('Comprar Material')
     compra_material.geometry('250x200')
