@@ -5,6 +5,7 @@ class Conexcao:
     def __init__(self,bd:str):
         self.connect=sqlite3.connect(bd)
         self.cursor=self.connect.cursor()
+    # Crea as tabelas que vamos definindo no sistema
     def crear_tabela(self):
         tabela="""CREATE TABLE IF NOT EXISTS PRODUTOS_COMPRADOS(
         id integer primary key autoincrement,
@@ -29,8 +30,11 @@ class Conexcao:
     def agregar_produto_estoque(self,nome:str,preco:float,quantidade:int):
         self.connect=sqlite3.connect('prova.db')
         self.cursor=self.connect.cursor()
+        #na tabela estoque de productos seleccionamos a cantidade de produtos que tem que coincida com o nome passado 
+        #por parametro
         self.cursor.execute("SELECT cantidad FROM ESTOQUE_PRODUTOS WHERE nome = ?",(nome,))
         cantidad=self.cursor.fetchone()
+        #verificamos se ja existe
         if cantidad:
             self.cursor.execute("SELECT preco_medio FROM ESTOQUE_PRODUTOS WHERE nome = ?",(nome,))
             preco_medio=self.cursor.fetchone()
@@ -45,6 +49,7 @@ class Conexcao:
             self.cursor.execute("INSERT INTO ESTOQUE_PRODUTOS(nome,preco_medio,cantidad) VALUES (?,?,?)",(nome,preco,quantidade))
             self.connect.commit()
             self.connect.close()
+    #Executado quando fazemos uma compra, ele atualiza tambem o estoque 
     def AgregarProduto(self,nome:str,preco:float,quantidade:int):
         self.connect=sqlite3.connect('prova.db')
         self.cursor=self.connect.cursor()
@@ -57,6 +62,7 @@ class Conexcao:
         self.connect.close()
         print(f'Produto agregado corretamente')
         self.agregar_produto_estoque(nome,preco,quantidade)
+    #producimos algum produto com a materia prima utilizada do estoque
     def producir(self,nome:str,cantidad:int,materia_prima:list):
         self.connect=sqlite3.connect('prova.db')
         self.cursor=self.connect.cursor()
@@ -70,6 +76,20 @@ class Conexcao:
             self.connect.commit()
         self.cursor.execute("INSERT INTO PRODUTOS(nome, cantidad, costo) VALUES (?,?,?)",(nome,cantidad,custo))
         self.connect.commit()
+        self.connect.close()
+    #venda de proutos
+    def venda_produto(self,nome:str,quantidade:int,valor_venda:float):
+        self.connect=sqlite3.connect('prova.db')
+        self.cursor=self.connect.cursor()
+        self.cursor.execute("SELECT cantidad FROM PRODUTOS WHERE nome =?",(nome,))
+        cantidade_previa=self.cursor.fetchone[0]
+        cantidad=cantidade_previa-quantidade
+        if cantidad>0:
+            self.cursor.execute("UPDATE PRODUTOS SET cantidad = ? WHERE nome = ?",(cantidad,nome))
+        else:
+            self.cursor.execute("DELETE FROM PRODUTOS WHERE nome = ?",(nome,))
+        self.connect.commit()
+        self.connect.close()
 """prova=Conexcao('prova.db')
 prova.crear_tabela()
 opcao=0
