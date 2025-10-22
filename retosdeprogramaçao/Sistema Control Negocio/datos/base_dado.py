@@ -26,6 +26,12 @@ class Conexcao:
         costo real)"""
         self.cursor.execute(tabela)
         self.connect.commit()
+        tabela="""CREATE TABLE IF NOT EXISTS FUNCIONARIOS(
+        nome text,
+        horas_trabalhadas real,
+        salario real)"""
+        self.cursor.execute(tabela)
+        self.connect.commit()
         self.connect.close()
     def agregar_produto_estoque(self,nome:str,preco:float,quantidade:int):
         self.connect=sqlite3.connect('prova.db')
@@ -90,24 +96,3 @@ class Conexcao:
             self.cursor.execute("DELETE FROM PRODUTOS WHERE nome = ?",(nome,))
         self.connect.commit()
         self.connect.close()
-"""prova=Conexcao('prova.db')
-prova.crear_tabela()
-opcao=0
-while opcao!='4':
-    print('Seleciona uma opção: ')
-    print('1. Comprar Materia Prima')
-    print('2. Fabricar Produto')
-    print('3. Vender Produto')
-    opcao=input('4. Sair')
-    match opcao:
-        case '1':
-            produto=input('Produto que compramos: ')
-            preco=float(input('Qual o preço do produto: '))
-            quantidade=int(input('Qual a quantidade do material: '))
-            prova.AgregarProduto(produto,preco,quantidade)
-        case '2':
-            pass
-        case '3':
-            pass
-        case _:
-            break"""

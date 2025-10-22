@@ -2,9 +2,11 @@ from datos import base_dado
 from modelo import materia_prima,produto
 import tkinter as tk
 from tkinter import messagebox
+con=base_dado.Conexcao('prova.db')
+con.crear_tabela()
 def fazer_compra():
     def insertar_datos():
-        con=base_dado.Conexcao('prova.db')
+        #con=base_dado.Conexcao('prova.db')
         name=prod.get()
         try:
             preco=float(preco_unitario.get())
