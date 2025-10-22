@@ -1,6 +1,6 @@
 import sqlite3
-from modelo.materia_prima import Materia_Prima
-from modelo.produto import Produto
+from modelo import materia_prima,produto
+#from modelo.produto import Produto
 class Conexcao:
     def __init__(self,bd:str):
         self.connect=sqlite3.connect(bd)
@@ -96,3 +96,14 @@ class Conexcao:
             self.cursor.execute("DELETE FROM PRODUTOS WHERE nome = ?",(nome,))
         self.connect.commit()
         self.connect.close()
+    #devolve lista de materia prima
+    def listar_materia_prima(self):
+        self.connect=sqlite3.connect('prova.db')
+        self.cursor=self.connect.cursor()
+        self.cursor.execute('SELECT * FROM ESTOQUE_PRODUTOS')
+        lista_estoque=self.cursor.fetchall()
+        self.connect.commit()
+        self.connect.close()
+        return lista_estoque
+con=Conexcao('prova.db')
+print(con.listar_materia_prima())

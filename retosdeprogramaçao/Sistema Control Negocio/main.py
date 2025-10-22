@@ -4,6 +4,8 @@ import tkinter as tk
 from tkinter import messagebox
 con=base_dado.Conexcao('prova.db')
 con.crear_tabela()
+def listar_materiaprima():
+    pass
 def fazer_compra():
     def insertar_datos():
         #con=base_dado.Conexcao('prova.db')
@@ -39,8 +41,13 @@ def fazer_compra():
     cantidad.place(x=90,y=90)
     botao=tk.Button(compra_material,text='Comprar',command=insertar_datos)
     botao.place(x=90,y=155)
-
     compra_material.mainloop()
+def fabricar_produto():
+    fab_prod=tk.Tk()
+    fab_prod.title('Fabricar Produto')
+    fab_prod.geometry('800x600')
+    lista=con.listar_materia_prima()
+
 janela=tk.Tk()
 janela.title('Controle Empresarial')
 janela.geometry('500x400')
@@ -49,7 +56,7 @@ janela.config(menu=barra_menu)
 #item Operaçoes
 menu_acao=tk.Menu(barra_menu,tearoff=0)
 menu_acao.add_command(label='Fazer Compra',command=fazer_compra)
-menu_acao.add_command(label='Fabricar')
+menu_acao.add_command(label='Fabricar',command=fabricar_produto)
 menu_acao.add_command(label='Vender')
 #Item funcionario
 menu_funcionarios=tk.Menu(barra_menu,tearoff=0)
