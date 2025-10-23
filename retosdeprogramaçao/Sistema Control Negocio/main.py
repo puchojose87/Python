@@ -2,10 +2,11 @@ from datos import base_dado
 from modelo import materia_prima,produto
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import ttk
 con=base_dado.Conexcao('prova.db')
 con.crear_tabela()
-def listar_materiaprima():
-    pass
+#def listar_materiaprima():
+#    pass
 def fazer_compra():
     def insertar_datos():
         #con=base_dado.Conexcao('prova.db')
@@ -17,8 +18,13 @@ def fazer_compra():
             preco_unitario.delete(0,len(preco_unitario.get()))
             preco_unitario.focus_set()
             return
-        cantidade=int(cantidad.get())
-        con.agregar_produto_estoque(name,preco,cantidade)
+        try:
+            cantidade=int(cantidad.get())
+        except ValueError:
+            messagebox.showwarning('Erro','A quantidade tem que ser um número entero',parent=compra_material)
+            cantidad.delete(0,len(cantidad.get()))
+            cantidad.focus_set()
+        con.AgregarProduto(name,preco,cantidade)
         cantidad.delete(0,len(cantidad.get()))
         preco_unitario.delete(0,len(preco_unitario.get()))
         prod.delete(0,len(prod.get()))
@@ -47,7 +53,26 @@ def fabricar_produto():
     fab_prod.title('Fabricar Produto')
     fab_prod.geometry('800x600')
     lista=con.listar_materia_prima()
-
+    ''' Aqui hicimos com un listbox
+    lista_materiales=tk.Listbox(fab_prod)
+    lista_materiales.place(x=50,y=50)
+    if len(lista)>0:
+        for item in lista:
+            lista_materiales.insert(lista.index(item),item[0])'''
+    #combobox con los materiales que tenemos en Almacen
+    def atualizar_spin(Event=None):
+        cantidad=con.cantidad_materia_prima_por_nome(combo.get())
+        #vamos a crear un spinbox con las cuantidades de materiales
+        spin_cantidad=tk.Spinbox(fab_prod,from_=1, to=cantidad)
+        spin_cantidad.place(x=300,y=50)
+    combo=ttk.Combobox(fab_prod,state="readonly")
+    combo.bind("<<ComboboxSelected>>",atualizar_spin)
+    combo.place(x=50,y=50)
+    nova_lista=[]
+    for item in lista:
+        nova_lista.append(item[0])
+    combo.config(values=nova_lista)
+    fab_prod.mainloop()
 janela=tk.Tk()
 janela.title('Controle Empresarial')
 janela.geometry('500x400')

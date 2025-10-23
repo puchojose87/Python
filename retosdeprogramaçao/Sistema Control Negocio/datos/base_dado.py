@@ -1,6 +1,6 @@
 import sqlite3
-from modelo import materia_prima,produto
-#from modelo.produto import Produto
+from modelo.materia_prima import Materia_Prima
+from modelo.produto import Produto
 class Conexcao:
     def __init__(self,bd:str):
         self.connect=sqlite3.connect(bd)
@@ -105,5 +105,12 @@ class Conexcao:
         self.connect.commit()
         self.connect.close()
         return lista_estoque
+    def cantidad_materia_prima_por_nome(self,nome:str):
+        self.connect=sqlite3.connect('prova.db')
+        self.cursor=self.connect.cursor()
+        self.cursor.execute('SELECT cantidad FROM ESTOQUE_PRODUTOS WHERE nome = ?',(nome,))
+        cantidade=self.cursor.fetchone()
+        self.connect.close()
+        return cantidade
 con=Conexcao('prova.db')
 print(con.listar_materia_prima())
